@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schoology on iPad: A Kid-Friendly Guide</title>
+  <style>
+    :root {
+      --blue: #1f5fae;
+      --light-blue: #eaf3ff;
+      --gold: #ffd54f;
+      --green: #2e7d32;
+      --red: #c62828;
+      --gray: #f5f7fb;
+      --dark: #1f2937;
+      --border: #d9e2f0;
+      --purple: #6b46c1;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background: #ffffff;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--blue), #4d8bd8);
+      color: white;
+      padding: 2rem 1.25rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 0.25rem auto;
+      max-width: 900px;
+      font-size: 1.05rem;
+    }
+
+    nav.topnav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    nav.topnav a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+    }
+
+    nav.topnav a:hover,
+    nav.topnav a:focus {
+      background: var(--light-blue);
+      outline: none;
+    }
+
+    .search-wrap {
+      margin-left: auto;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-wrap input {
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-width: 240px;
+      font-size: 1rem;
+    }
+
+    .search-wrap button {
+      padding: 0.55rem 0.9rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--blue);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .search-wrap button:hover {
+      background: #174b8a;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    .card {
+      background: var(--gray);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.15rem 1.25rem;
+      margin: 1rem 0 1.25rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    h2, h3, h4 {
+      color: var(--blue);
+    }
+
+    h2 {
+      margin-top: 0.2rem;
+    }
+
+    h4 {
+      color: var(--purple);
+      margin-bottom: 0.3rem;
+    }
+
+    .toc ol {
+      padding-left: 1.25rem;
+    }
+
+    .toc li {
+      margin: 0.45rem 0;
+    }
+
+    .toc a,
+    .index a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover,
+    .index a:hover {
+      text-decoration: underline;
+    }
+
+    .tip {
+      background: #eefaf0;
+      border-left: 6px solid var(--green);
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin: 0.85rem 0;
+    }
+
+    .warning {
+      background: #fff8e6;
+      border-left: 6px solid var(--gold);
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin: 0.85rem 0;
+    }
+
+    .help {
+      background: #ffefef;
+      border-left: 6px solid var(--red);
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin: 0.85rem 0;
+    }
+
+    ul.checklist li,
+    ol li {
+      margin-bottom: 0.4rem;
+    }
+
+    .section {
+      scroll-margin-top: 85px;
+      padding-top: 0.3rem;
+    }
+
+    .backtop {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .backtop:hover {
+      text-decoration: underline;
+    }
+
+    .highlight {
+      background: yellow;
+      padding: 0.05rem 0.15rem;
+      border-radius: 4px;
+    }
+
+    .hidden-by-search {
+      display: none;
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem 1.25rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--light-blue);
+      color: var(--blue);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.88rem;
+      margin: 0.15rem 0.2rem 0.15rem 0;
+    }
+
+    .result-note {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-top: 0.3rem;
+    }
+
+    .mini-box {
+      background: white;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+    }
+
+    footer {
+      margin-top: 2rem;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    @media (max-width: 720px) {
+      header h1 {
+        font-size: 1.6rem;
+      }
+
+      .search-wrap {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .search-wrap input {
+        flex: 1 1 100%;
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a id="top"></a>
+
+  <header>
+    <h1>Schoology on iPad: A Kid-Friendly Guide</h1>
+    <p>Welcome! This guide shows you how to use the Schoology app on your iPad to check classes, find assignments, complete your school work, turn it in, and stay organized.</p>
+    <p><strong>Main Focus:</strong> how to complete and submit school work the right way ⭐</p>
+  </header>
+
+  <nav class="topnav" aria-label="Quick navigation">
+    <a href="#toc">Table of Contents</a>
+    <a href="#start">Getting Started</a>
+    <a href="#login">Logging In</a>
+    <a href="#home">Home Screen</a>
+    <a href="#courses">Courses</a>
+    <a href="#assignments">School Work</a>
+    <a href="#messages">Messages</a>
+    <a href="#calendar">Calendar</a>
+    <a href="#troubleshooting">Help</a>
+    <a href="#index">Index</a>
+
+    <div class="search-wrap" role="search" aria-label="Keyword search">
+      <label for="searchInput"><strong>Search:</strong></label>
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Try: assignment, submit, login, message, grades"
+        aria-label="Search this guide"
+      />
+      <button type="button" onclick="searchGuide()">Find</button>
+      <button type="button" onclick="clearSearch()">Clear</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="toc" class="card toc section searchable">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#start">Getting Started</a></li>
+        <li><a href="#login">Logging In</a></li>
+        <li><a href="#home">Using the Home Screen</a></li>
+        <li><a href="#courses">Opening Your Courses</a></li>
+        <li><a href="#assignments">Finding, Completing, and Submitting School Work</a></li>
+        <li><a href="#messages">Reading Messages and Notifications</a></li>
+        <li><a href="#calendar">Checking the Calendar and Upcoming Work</a></li>
+        <li><a href="#goodhabits">Good Schoology Habits</a></li>
+        <li><a href="#troubleshooting">What to Do if Something Goes Wrong</a></li>
+        <li><a href="#index">Index</a></li>
+      </ol>
+      <p class="result-note" id="searchStatus">Type a word in the search box to find matching sections.</p>
+    </section>
+
+    <section id="start" class="card section searchable">
+      <h2>1. Getting Started</h2>
+      <p>Before you begin, make sure your iPad is charged, connected to Wi-Fi, and has the Schoology app installed.</p>
+
+      <div class="tip">
+        <strong>Tip:</strong> If you do not know your login information, ask a teacher, parent, or school helper.
+      </div>
+
+      <h3>What you may need</h3>
+      <ul class="checklist">
+        <li>Your school name</li>
+        <li>Your username or email</li>
+        <li>Your password</li>
+        <li>Sometimes a special school sign-in method</li>
+      </ul>
+
+      <h3>What Schoology helps you do</h3>
+      <ul class="checklist">
+        <li>Open your classes</li>
+        <li>See assignments and reminders</li>
+        <li>Read updates and messages</li>
+        <li>Turn in work from your iPad</li>
+      </ul>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="login" class="card section searchable">
+      <h2>2. Logging In</h2>
+      <p>Open the Schoology app on your iPad. Your school may ask you to sign in through your school or district.</p>
+
+      <h3>Steps to log in</h3>
+      <ol>
+        <li>Tap the Schoology app.</li>
+        <li>Choose the sign-in option your school uses.</li>
+        <li>Type your school name if you need to search for it.</li>
+        <li>Tap your school when it appears.</li>
+        <li>Enter your username or email.</li>
+        <li>Enter your password.</li>
+        <li>Tap <strong>Sign In</strong>.</li>
+      </ol>
+
+      <div class="warning">
+        <strong>Remember:</strong> Some schools use special login methods like SSO, QR codes, or custom sign-in pages.
+      </div>
+
+      <div class="help">
+        <strong>If you get stuck:</strong> Ask your teacher or school tech helper which sign-in method your school uses.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="home" class="card section searchable">
+      <h2>3. Using the Home Screen</h2>
+      <p>After you log in, you may see one of two main views: <strong>Recent Activity</strong> or the <strong>Course Dashboard</strong>.</p>
+
+      <h3>Recent Activity</h3>
+      <p>This shows updates, class posts, and school news.</p>
+
+      <h3>Course Dashboard</h3>
+      <p>This shows your classes as tiles so you can open them quickly.</p>
+
+      <h3>Helpful menu items</h3>
+      <ul class="checklist">
+        <li>Home</li>
+        <li>Courses</li>
+        <li>Messages</li>
+        <li>Notifications</li>
+        <li>Grades</li>
+        <li>Calendar</li>
+        <li>Account Settings</li>
+        <li>Logout</li>
+      </ul>
+
+      <div class="tip">
+        <strong>Tip:</strong> The menu button in the top-left corner helps you move around the app quickly.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="courses" class="card section searchable">
+      <h2>4. Opening Your Courses</h2>
+      <p>Your courses are your classes, like math, reading, science, music, or social studies.</p>
+
+      <h3>To open a course</h3>
+      <ol>
+        <li>Tap <strong>Courses</strong> from the menu, or tap a class tile on the dashboard.</li>
+        <li>Choose the class you want.</li>
+        <li>Look for materials, folders, updates, reminders, and teacher directions.</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Tip:</strong> If you are not sure where to begin, check the class <strong>Materials</strong> area or the <strong>Upcoming</strong> section.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="assignments" class="card section searchable">
+      <h2>5. Finding, Completing, and Submitting School Work</h2>
+
+      <p>This is the most important part of Schoology! This section will help you find your assignment, understand what your teacher wants, complete your work, and submit it the right way.</p>
+
+      <div class="tip">
+        <strong>Big Idea:</strong> A smart Schoology routine is: <em>Find it → Read it → Do it → Check it → Submit it → Confirm it</em>.
+      </div>
+
+      <h3>Step 1: Find Your Assignment</h3>
+      <p>You can usually find assignments in several places:</p>
+      <ul class="checklist">
+        <li><strong>Notifications</strong> – tap an alert when something new is assigned</li>
+        <li><strong>Upcoming</strong> – shows what is due soon</li>
+        <li><strong>Course page</strong> – look in Materials, folders, or weekly sections</li>
+        <li><strong>Home screen</strong> – check course reminders and updates</li>
+      </ul>
+
+      <div class="mini-box">
+        <strong>Best habit:</strong> Check <strong>Upcoming</strong> first if you want to know what needs to be done next.
+      </div>
+
+      <h3>Step 2: Open and Read the Assignment Carefully</h3>
+      <ol>
+        <li>Tap the assignment title.</li>
+        <li>Read all the directions slowly.</li>
+        <li>Look for important parts like:
+          <ul>
+            <li>Due date</li>
+            <li>Instructions</li>
+            <li>Attached files, links, or videos</li>
+            <li>Whether your teacher wants typing, a file, or a photo</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="warning">
+        <strong>Important:</strong> A lot of mistakes happen when students skip the directions. Read the whole assignment before you start.
+      </div>
+
+      <h3>Step 3: Decide HOW You Will Do the Work</h3>
+      <p>Your teacher may want different types of work. Choose the correct method.</p>
+
+      <h4>✏️ Option A: Type Your Answer</h4>
+      <p>Use this when your teacher wants a written response, paragraph, or short answer.</p>
+      <ol>
+        <li>Open the assignment.</li>
+        <li>Tap <strong>Submissions</strong>.</li>
+        <li>Tap the <strong>+</strong> button.</li>
+        <li>Choose <strong>Create Submission</strong>.</li>
+        <li>Type your answer carefully.</li>
+      </ol>
+
+      <h4>📄 Option B: Upload a Saved File or Picture</h4>
+      <p>Use this if your work is already saved on the iPad, such as a picture, screenshot, worksheet image, or another file your teacher asked for.</p>
+      <ol>
+        <li>Open the assignment.</li>
+        <li>Tap <strong>Submissions</strong>.</li>
+        <li>Tap the <strong>+</strong> button.</li>
+        <li>Select the option to submit from your saved items.</li>
+        <li>Choose the correct file or image.</li>
+      </ol>
+
+      <h4>📸 Option C: Take a Photo of Your Work</h4>
+      <p>Use this for handwritten work like math, spelling, reading logs, or a worksheet you completed on paper.</p>
+      <ol>
+        <li>Open the assignment.</li>
+        <li>Tap <strong>Submissions</strong>.</li>
+        <li>Tap the <strong>+</strong> button.</li>
+        <li>Choose <strong>Take Photo or Video</strong>.</li>
+        <li>Take a clear picture of your paper.</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Photo tip:</strong> Put your paper on a flat surface with good light. Make sure the whole page can be read.
+      </div>
+
+      <h3>Step 4: Complete the Work</h3>
+      <p>Before you submit anything, make sure the work is actually finished.</p>
+
+      <h4>Ask yourself these questions:</h4>
+      <ul class="checklist">
+        <li>Did I answer every question?</li>
+        <li>Did I follow the teacher’s directions?</li>
+        <li>Is my writing clear and easy to read?</li>
+        <li>Did I finish all parts of the assignment?</li>
+        <li>Did I choose the correct file, photo, or text answer?</li>
+      </ul>
+
+      <div class="warning">
+        <strong>Common mistake:</strong> Students sometimes tap submit before they are finished. Always check your work first.
+      </div>
+
+      <h3>Step 5: Save a Draft If You Are Not Done Yet</h3>
+      <p>If you need more time, you may be able to save your work and come back later.</p>
+      <ul class="checklist">
+        <li>Use <strong>Save Draft</strong> if it appears.</li>
+        <li>Come back later to finish your work.</li>
+        <li>Do not forget to return and really submit it.</li>
+      </ul>
+
+      <div class="tip">
+        <strong>Helpful reminder:</strong> A draft is not the same as a final submission.
+      </div>
+
+      <h3>Step 6: Submit Your Assignment</h3>
+      <ol>
+        <li>Open the assignment.</li>
+        <li>Tap <strong>Submissions</strong>.</li>
+        <li>Tap the <strong>+</strong> button if needed.</li>
+        <li>Choose your submission type.</li>
+        <li>Attach or type your work.</li>
+        <li>Tap the <strong>checkmark</strong> or the button that finishes the submission.</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Look for proof:</strong> After you submit, check that your work shows as turned in or submitted.
+      </div>
+
+      <h3>Step 7: Confirm That It Really Went Through</h3>
+      <p>After you submit, take one more look.</p>
+      <ul class="checklist">
+        <li>Does it show your work attached?</li>
+        <li>Does it say <strong>Submitted</strong> or show that the work was turned in?</li>
+        <li>Can you see the text, photo, or file you added?</li>
+      </ul>
+
+      <div class="mini-box">
+        <strong>Best student move:</strong> Never assume it worked. Always confirm.
+      </div>
+
+      <h3>Step 8: Check Later for Feedback or Grades</h3>
+      <p>After your teacher reviews your work, you may see:</p>
+      <ul class="checklist">
+        <li>A grade</li>
+        <li>A comment</li>
+        <li>Feedback about how to improve</li>
+      </ul>
+
+      <h3>Smart Student Workflow (Do This Every Time)</h3>
+      <ol>
+        <li>Open the assignment</li>
+        <li>Read the directions slowly</li>
+        <li>Complete the work</li>
+        <li>Double-check everything</li>
+        <li>Submit it</li>
+        <li>Confirm it went through</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Pro tip:</strong> If you are unsure, ask yourself: “Does my work match what the teacher asked me to do?”
+      </div>
+
+      <h3>What If Something Goes Wrong?</h3>
+
+      <h4>❌ I submitted the wrong file</h4>
+      <ul class="checklist">
+        <li>See if you can submit again.</li>
+        <li>If not, message your teacher or ask for help right away.</li>
+      </ul>
+
+      <h4>❌ My file or photo did not upload</h4>
+      <ul class="checklist">
+        <li>Check your Wi-Fi.</li>
+        <li>Try again.</li>
+        <li>Close and reopen the app if needed.</li>
+      </ul>
+
+      <h4>❌ I do not see a submit button</h4>
+      <ul class="checklist">
+        <li>Make sure you are inside the assignment.</li>
+        <li>Look for the <strong>Submissions</strong> area.</li>
+        <li>Ask your teacher if the assignment should be turned in through Schoology.</li>
+      </ul>
+
+      <h4>❌ I missed the due date</h4>
+      <ul class="checklist">
+        <li>Submit it anyway if the app allows it.</li>
+        <li>Tell your teacher what happened.</li>
+      </ul>
+
+      <h4>❌ I cannot tell if it was submitted</h4>
+      <ul class="checklist">
+        <li>Reopen the assignment and check the submission area.</li>
+        <li>Look for your file, text, or image and the submitted status.</li>
+        <li>Take a screenshot if you want proof.</li>
+      </ul>
+
+      <div class="help">
+        <strong>Remember:</strong> Teachers want you to succeed. If something goes wrong, ask for help before the assignment is forgotten.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="messages" class="card section searchable">
+      <h2>6. Reading Messages and Notifications</h2>
+      <p>Messages help you talk with teachers or classmates when your school allows it. Notifications help you notice what is new.</p>
+
+      <h3>To check notifications</h3>
+      <ol>
+        <li>Open the menu.</li>
+        <li>Tap <strong>Notifications</strong>.</li>
+        <li>Read new alerts about assignments, updates, or class activity.</li>
+      </ol>
+
+      <h3>To check messages</h3>
+      <ol>
+        <li>Open the menu.</li>
+        <li>Tap <strong>Messages</strong>.</li>
+        <li>Open your inbox.</li>
+        <li>Tap a message to read it.</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Tip:</strong> A dot or alert may mean you have something new to read.
+      </div>
+
+      <h3>When should you send a message?</h3>
+      <ul class="checklist">
+        <li>If you do not understand directions</li>
+        <li>If you uploaded the wrong file</li>
+        <li>If you had trouble submitting</li>
+        <li>If you need help before the due date</li>
+      </ul>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="calendar" class="card section searchable">
+      <h2>7. Checking the Calendar and Upcoming Work</h2>
+      <p>The calendar and upcoming tools help you remember what is due.</p>
+
+      <h3>What to look for</h3>
+      <ul class="checklist">
+        <li>Assignment due dates</li>
+        <li>Class events</li>
+        <li>Reminders</li>
+        <li>School events</li>
+      </ul>
+
+      <h3>How to use it</h3>
+      <ol>
+        <li>Tap <strong>Calendar</strong> from the menu, or open the <strong>Upcoming</strong> area.</li>
+        <li>Look for today’s work and future due dates.</li>
+        <li>Tap an item to open it.</li>
+      </ol>
+
+      <div class="tip">
+        <strong>Best practice:</strong> Check Schoology at the start and end of the school day.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="goodhabits" class="card section searchable">
+      <h2>8. Good Schoology Habits</h2>
+      <ul class="checklist">
+        <li>Check for new notifications every day.</li>
+        <li>Open each class and look for new work.</li>
+        <li>Read directions all the way through.</li>
+        <li>Start early when you can.</li>
+        <li>Save a draft if you need more time.</li>
+        <li>Double-check before submitting.</li>
+        <li>Confirm your work really went through.</li>
+        <li>Ask for help when something is confusing.</li>
+        <li>Log out if your iPad is shared with other people.</li>
+      </ul>
+
+      <div class="tip">
+        <strong>Gold-star idea:</strong> Make a routine: <em>Messages → Classes → Assignments → Calendar</em>.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="troubleshooting" class="card section searchable">
+      <h2>9. What to Do if Something Goes Wrong</h2>
+
+      <h3>I cannot log in</h3>
+      <ul class="checklist">
+        <li>Check your username and password carefully.</li>
+        <li>Make sure you picked the correct school.</li>
+        <li>Ask if your school uses a special sign-in page or SSO.</li>
+      </ul>
+
+      <h3>I cannot find my assignment</h3>
+      <ul class="checklist">
+        <li>Look in <strong>Notifications</strong>.</li>
+        <li>Look in <strong>Upcoming</strong>.</li>
+        <li>Open the class and check <strong>Materials</strong>.</li>
+      </ul>
+
+      <h3>Something looks missing in the app</h3>
+      <ul class="checklist">
+        <li>Some Schoology features work better on a computer or in a browser.</li>
+        <li>Ask your teacher if you should use Safari for that step.</li>
+      </ul>
+
+      <h3>I am unsure if my school work is complete</h3>
+      <ul class="checklist">
+        <li>Re-read the directions.</li>
+        <li>Check whether all questions were answered.</li>
+        <li>Make sure any file, photo, or written response was added.</li>
+      </ul>
+
+      <div class="help">
+        <strong>Always okay to ask for help:</strong> Teachers, parents, and school tech helpers are there to help you learn.
+      </div>
+
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+
+    <section id="index" class="card section searchable index">
+      <h2>Index</h2>
+      <div class="index-grid">
+        <div><strong>A</strong><br><a href="#assignments">Assignments</a></div>
+        <div><strong>C</strong><br><a href="#calendar">Calendar</a><br><a href="#courses">Courses</a><br><a href="#home">Course Dashboard</a></div>
+        <div><strong>D</strong><br><a href="#assignments">Draft</a><br><a href="#calendar">Due dates</a></div>
+        <div><strong>F</strong><br><a href="#assignments">File upload</a><br><a href="#assignments">Feedback</a></div>
+        <div><strong>G</strong><br><a href="#goodhabits">Good habits</a><br><a href="#start">Getting started</a><br><a href="#assignments">Grades</a></div>
+        <div><strong>H</strong><br><a href="#home">Home screen</a><br><a href="#troubleshooting">Help</a></div>
+        <div><strong>L</strong><br><a href="#login">Log in</a><br><a href="#troubleshooting">Login help</a><br><a href="#goodhabits">Log out</a></div>
+        <div><strong>M</strong><br><a href="#messages">Messages</a><br><a href="#courses">Materials</a></div>
+        <div><strong>N</strong><br><a href="#messages">Notifications</a></div>
+        <div><strong>P</strong><br><a href="#assignments">Photo submission</a></div>
+        <div><strong>R</strong><br><a href="#home">Recent Activity</a></div>
+        <div><strong>S</strong><br><a href="#login">School sign-in</a><br><a href="#assignments">Save Draft</a><br><a href="#assignments">Submission</a><br><a href="#assignments">Submitted</a></div>
+        <div><strong>T</strong><br><a href="#assignments">Text submission</a></div>
+        <div><strong>U</strong><br><a href="#calendar">Upcoming</a><br><a href="#assignments">Upload</a></div>
+        <div><strong>W</strong><br><a href="#assignments">Workflow</a><br><a href="#troubleshooting">What if something goes wrong?</a></div>
+      </div>
+      <a class="backtop" href="#top">↑ Back to top</a>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Teacher/Parent Note:</strong> This guide uses simple, student-friendly language. Some schools customize Schoology, so some button names or sign-in steps may look a little different.</p>
+    <p>
+      <span class="badge">Kid-friendly</span>
+      <span class="badge">Primary focus: school work</span>
+      <span class="badge">With search</span>
+      <span class="badge">With navigation</span>
+      <span class="badge">With index</span>
+    </p>
+  </footer>
+
+  <script>
+    const searchableSections = Array.from(document.querySelectorAll('.searchable'));
+    const searchInput = document.getElementById('searchInput');
+    const searchStatus = document.getElementById('searchStatus');
+
+    function removeHighlights(element) {
+      const highlights = element.querySelectorAll('span.highlight');
+      highlights.forEach((span) => {
+        const textNode = document.createTextNode(span.textContent);
+        span.parentNode.replaceChild(textNode, span);
+      });
+      element.normalize();
+    }
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightText(element, term) {
+      if (!term) return;
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+      const nodes = [];
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (
+          node.parentNode &&
+          node.parentNode.nodeName !== 'SCRIPT' &&
+          node.parentNode.nodeName !== 'STYLE' &&
+          node.nodeValue.trim()
+        ) {
+          nodes.push(node);
+        }
+      }
+
+      nodes.forEach((textNode) => {
+        const text = textNode.nodeValue;
+        const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+        if (regex.test(text)) {
+          const span = document.createElement('span');
+          span.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+          textNode.parentNode.replaceChild(span, textNode);
+        }
+      });
+    }
+
+    function searchGuide() {
+      const term = searchInput.value.trim().toLowerCase();
+
+      searchableSections.forEach(section => {
+        removeHighlights(section);
+        section.classList.remove('hidden-by-search');
+      });
+
+      if (!term) {
+        searchStatus.textContent = 'Type a word in the search box to find matching sections.';
+        return;
+      }
+
+      let matches = 0;
+
+      searchableSections.forEach(section => {
+        const rawText = section.textContent.toLowerCase();
+        if (rawText.includes(term)) {
+          matches++;
+          highlightText(section, term);
+        } else if (section.id !== 'toc') {
+          section.classList.add('hidden-by-search');
+        }
+      });
+
+      if (matches > 0) {
+        searchStatus.textContent = `Found ${matches} matching section(s) for "${term}".`;
+        const firstVisible = searchableSections.find(
+          section => !section.classList.contains('hidden-by-search') && section.id !== 'toc'
+        );
+        if (firstVisible) {
+          firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        searchStatus.textContent = `No sections matched "${term}". Try another word like login, submit, message, course, or assignment.`;
+      }
+    }
+
+    function clearSearch() {
+      searchInput.value = '';
+      searchableSections.forEach(section => {
+        removeHighlights(section);
+        section.classList.remove('hidden-by-search');
+      });
+      searchStatus.textContent = 'Type a word in the search box to find matching sections.';
+    }
+
+    searchInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        searchGuide();
+      }
+    });
+  </script>
+</body>
+</html>
+``
