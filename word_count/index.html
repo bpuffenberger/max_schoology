@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Count Exclusion Tool</title>
+  <meta name="description" content="A single-file word count tool that lets you exclude selected words and optionally exclude numbers." />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-soft: #f1f5f9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --accent: #0f172a;
+      --accent-2: #334155;
+      --success: #0f766e;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+      --radius: 20px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 2.8vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card {
+      padding: 18px;
+      min-height: 128px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .stat-title {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: clamp(1.9rem, 2.3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-subtitle {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--panel-soft);
+      display: grid;
+      place-items: center;
+      font-size: 1.05rem;
+      color: var(--accent-2);
+      flex: 0 0 auto;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.85fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .section {
+      padding: 20px;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 11px 16px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+      font-weight: 600;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn.secondary {
+      background: var(--panel-soft);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn.outline {
+      background: white;
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .btn.small {
+      padding: 9px 14px;
+      font-size: 0.95rem;
+    }
+
+    .text-input {
+      width: 100%;
+      min-height: 430px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: white;
+      padding: 16px 18px;
+      resize: vertical;
+      outline: none;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .text-input:focus,
+    .line-input:focus {
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.15);
+    }
+
+    .checkbox-row {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: white;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .checkbox-row label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .checkbox-row .note {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .line-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: white;
+      padding: 12px 15px;
+      outline: none;
+    }
+
+    .label {
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #334155;
+      font-size: 0.95rem;
+    }
+
+    .empty {
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      color: var(--muted);
+      background: #fff;
+      font-size: 0.95rem;
+    }
+
+    .chip-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-height: 430px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: white;
+      color: #334155;
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-size: 0.94rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+    }
+
+    .chip:hover { transform: translateY(-1px); border-color: #94a3b8; }
+
+    .chip.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .chip-count {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .chip.active .chip-count {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .excluded-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .excluded-chip {
+      background: var(--panel-soft);
+      color: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 0.93rem;
+      user-select: none;
+    }
+
+    .excluded-chip:hover {
+      border-color: #94a3b8;
+    }
+
+    .xmark {
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .freq-list {
+      display: grid;
+      gap: 10px;
+      max-height: 420px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .freq-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: var(--radius-sm);
+    }
+
+    .freq-word {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .freq-count {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .status {
+      margin-top: 12px;
+      min-height: 24px;
+      color: var(--success);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    @media (max-width: 1180px) {
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 16px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .input-row { grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .toolbar .btn { width: auto; }
+    }
+
+    @media (max-width: 520px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>Word Count Exclusion Tool</h1>
+      <div class="subtitle">
+        Paste text, get a live word count, optionally exclude number-only tokens, and click any word to remove it from the adjusted total.
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card stat-card">
+        <div>
+          <div class="stat-title">Raw words/tokens</div>
+          <div class="stat-value" id="rawCount">0</div>
+          <div class="stat-subtitle">Everything detected in the text</div>
+        </div>
+        <div class="stat-icon">T</div>
+      </div>
+      <div class="card stat-card">
+        <div>
+          <div class="stat-title">After number rule</div>
+          <div class="stat-value" id="consideredCount">0</div>
+          <div class="stat-subtitle" id="numberRuleLabel">Numbers still included</div>
+        </div>
+        <div class="stat-icon">#</div>
+      </div>
+      <div class="card stat-card">
+        <div>
+          <div class="stat-title">Adjusted count</div>
+          <div class="stat-value" id="adjustedCount">0</div>
+          <div class="stat-subtitle">Final count after exclusions</div>
+        </div>
+        <div class="stat-icon">F</div>
+      </div>
+      <div class="card stat-card">
+        <div>
+          <div class="stat-title">Unique counted words</div>
+          <div class="stat-value" id="uniqueCount">0</div>
+          <div class="stat-subtitle">Distinct terms still counted</div>
+        </div>
+        <div class="stat-icon">U</div>
+      </div>
+      <div class="card stat-card">
+        <div>
+          <div class="stat-title">Removed occurrences</div>
+          <div class="stat-value" id="excludedOccurrences">0</div>
+          <div class="stat-subtitle">Excluded words removed from total</div>
+        </div>
+        <div class="stat-icon">−</div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="card section">
+        <h2>Paste text</h2>
+        <div class="toolbar">
+          <button class="btn" id="pasteButton" type="button">Paste</button>
+          <button class="btn secondary" id="sampleButton" type="button">Load sample</button>
+          <button class="btn secondary" id="copyButton" type="button">Copy summary</button>
+          <button class="btn outline" id="clearButton" type="button">Clear all</button>
+        </div>
+
+        <textarea id="textInput" class="text-input" placeholder="Cut and paste text here..."></textarea>
+
+        <div class="checkbox-row">
+          <label>
+            <input id="excludeNumbers" type="checkbox" />
+            Exclude number-only tokens (example: 123, 2026)
+          </label>
+          <div class="note">Word matching is case-insensitive.</div>
+        </div>
+
+        <div class="status" id="statusMessage"></div>
+        <div class="footer-note">Tip: click any word on the right to remove it from the adjusted total. Click it again to add it back.</div>
+      </div>
+
+      <div class="stack">
+        <div class="card section">
+          <h2>Exclude words</h2>
+          <div class="input-row">
+            <input id="manualWordInput" class="line-input" type="text" placeholder="Type one or more words, then add" />
+            <button class="btn small" id="addWordButton" type="button">Add</button>
+          </div>
+
+          <div style="margin-top: 18px;">
+            <div class="label">Currently excluded</div>
+            <div id="excludedWordsArea" class="excluded-wrap"></div>
+          </div>
+        </div>
+
+        <div class="card section">
+          <h2>Click words to exclude/include</h2>
+          <div id="sourceWordsArea" class="chip-wrap"></div>
+        </div>
+
+        <div class="card section">
+          <h2>Most frequent counted words</h2>
+          <div id="countedWordsArea" class="freq-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SAMPLE_TEXT = `Paste or type text here.
+
+This single-file tool gives you a live word count and lets you exclude words you choose. For example, if the word hotel appears four times and you exclude hotel, those four instances are removed from the adjusted count. You can also choose to exclude numbers like 2026 or 123 automatically.`;
+
+    const state = {
+      text: "",
+      excludeNumbers: false,
+      excludedWords: new Set(),
+      analysis: null,
+    };
+
+    const els = {
+      textInput: document.getElementById('textInput'),
+      excludeNumbers: document.getElementById('excludeNumbers'),
+      manualWordInput: document.getElementById('manualWordInput'),
+      statusMessage: document.getElementById('statusMessage'),
+      rawCount: document.getElementById('rawCount'),
+      consideredCount: document.getElementById('consideredCount'),
+      adjustedCount: document.getElementById('adjustedCount'),
+      uniqueCount: document.getElementById('uniqueCount'),
+      excludedOccurrences: document.getElementById('excludedOccurrences'),
+      numberRuleLabel: document.getElementById('numberRuleLabel'),
+      excludedWordsArea: document.getElementById('excludedWordsArea'),
+      sourceWordsArea: document.getElementById('sourceWordsArea'),
+      countedWordsArea: document.getElementById('countedWordsArea'),
+      pasteButton: document.getElementById('pasteButton'),
+      sampleButton: document.getElementById('sampleButton'),
+      copyButton: document.getElementById('copyButton'),
+      clearButton: document.getElementById('clearButton'),
+      addWordButton: document.getElementById('addWordButton'),
+    };
+
+    function tokenize(text) {
+      return text.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || [];
+    }
+
+    function normalize(token) {
+      return token.toLowerCase();
+    }
+
+    function isNumberToken(token) {
+      return /^\d+(?:[.,]\d+)?$/.test(token);
+    }
+
+    function buildFrequency(tokens) {
+      const map = new Map();
+      for (const token of tokens) {
+        map.set(token, (map.get(token) || 0) + 1);
+      }
+      return [...map.entries()]
+        .map(([word, count]) => ({ word, count }))
+        .sort((a, b) => b.count - a.count || a.word.localeCompare(b.word));
+    }
+
+    function analyze() {
+      const rawTokens = tokenize(state.text);
+      const normalizedRaw = rawTokens.map(normalize);
+      const consideredTokens = normalizedRaw.filter(token => !(state.excludeNumbers && isNumberToken(token)));
+      const countedTokens = consideredTokens.filter(token => !state.excludedWords.has(token));
+      const sourceFrequency = buildFrequency(consideredTokens);
+      const countedFrequency = buildFrequency(countedTokens);
+
+      state.analysis = {
+        rawCount: rawTokens.length,
+        consideredCount: consideredTokens.length,
+        adjustedCount: countedTokens.length,
+        uniqueCount: new Set(countedTokens).size,
+        excludedOccurrences: consideredTokens.length - countedTokens.length,
+        sourceFrequency,
+        countedFrequency,
+        topSourceWords: sourceFrequency.slice(0, 140),
+        topCountedWords: countedFrequency.slice(0, 40),
+      };
+    }
+
+    function setStatus(message, isError = false) {
+      els.statusMessage.textContent = message || '';
+      els.statusMessage.style.color = isError ? '#b91c1c' : '#0f766e';
+      if (message) {
+        clearTimeout(setStatus.timeoutId);
+        setStatus.timeoutId = setTimeout(() => {
+          els.statusMessage.textContent = '';
+        }, 2600);
+      }
+    }
+
+    function renderStats() {
+      const a = state.analysis;
+      els.rawCount.textContent = a.rawCount.toLocaleString();
+      els.consideredCount.textContent = a.consideredCount.toLocaleString();
+      els.adjustedCount.textContent = a.adjustedCount.toLocaleString();
+      els.uniqueCount.textContent = a.uniqueCount.toLocaleString();
+      els.excludedOccurrences.textContent = a.excludedOccurrences.toLocaleString();
+      els.numberRuleLabel.textContent = state.excludeNumbers ? 'Numeric tokens removed' : 'Numbers still included';
+    }
+
+    function renderExcludedWords() {
+      const words = [...state.excludedWords].sort((a, b) => a.localeCompare(b));
+      if (!words.length) {
+        els.excludedWordsArea.innerHTML = '<div class="empty">No excluded words yet. Add them manually or click terms below.</div>';
+        return;
+      }
+
+      els.excludedWordsArea.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      words.forEach(word => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'excluded-chip';
+        chip.title = 'Click to remove';
+        chip.innerHTML = `<span>${escapeHtml(word)}</span><span class="xmark">×</span>`;
+        chip.addEventListener('click', () => {
+          state.excludedWords.delete(word);
+          update();
+        });
+        fragment.appendChild(chip);
+      });
+      els.excludedWordsArea.appendChild(fragment);
+    }
+
+    function renderSourceWords() {
+      const words = state.analysis.topSourceWords;
+      if (!words.length) {
+        els.sourceWordsArea.innerHTML = '<div class="empty">Paste text to see selectable words here.</div>';
+        return;
+      }
+
+      els.sourceWordsArea.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      words.forEach(({ word, count }) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip' + (state.excludedWords.has(word) ? ' active' : '');
+        btn.title = state.excludedWords.has(word) ? 'Currently excluded. Click to include again.' : 'Click to exclude this word';
+        btn.innerHTML = `<span>${escapeHtml(word)}</span><span class="chip-count">${count}</span>`;
+        btn.addEventListener('click', () => {
+          if (state.excludedWords.has(word)) {
+            state.excludedWords.delete(word);
+          } else {
+            state.excludedWords.add(word);
+          }
+          update();
+        });
+        fragment.appendChild(btn);
+      });
+      els.sourceWordsArea.appendChild(fragment);
+    }
+
+    function renderCountedWords() {
+      const words = state.analysis.topCountedWords;
+      if (!words.length) {
+        els.countedWordsArea.innerHTML = '<div class="empty">No counted words available yet.</div>';
+        return;
+      }
+
+      els.countedWordsArea.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      words.forEach(({ word, count }) => {
+        const row = document.createElement('div');
+        row.className = 'freq-row';
+        row.innerHTML = `<div class="freq-word">${escapeHtml(word)}</div><div class="freq-count">${count}</div>`;
+        fragment.appendChild(row);
+      });
+      els.countedWordsArea.appendChild(fragment);
+    }
+
+    function update() {
+      analyze();
+      renderStats();
+      renderExcludedWords();
+      renderSourceWords();
+      renderCountedWords();
+    }
+
+    function addExcludedWordsFromInput(value) {
+      const words = tokenize(value).map(normalize).filter(Boolean);
+      if (!words.length) return;
+      words.forEach(word => state.excludedWords.add(word));
+      els.manualWordInput.value = '';
+      update();
+    }
+
+    function copySummary() {
+      const a = state.analysis;
+      const summary = [
+        `Raw words/tokens: ${a.rawCount}`,
+        `Counted after number rule: ${a.consideredCount}`,
+        `Adjusted count after exclusions: ${a.adjustedCount}`,
+        `Unique counted words: ${a.uniqueCount}`,
+        `Excluded occurrences removed: ${a.excludedOccurrences}`,
+        `Excluded words: ${state.excludedWords.size ? [...state.excludedWords].sort((a, b) => a.localeCompare(b)).join(', ') : 'None'}`,
+        `Numbers excluded: ${state.excludeNumbers ? 'Yes' : 'No'}`,
+      ].join('
+');
+
+      navigator.clipboard.writeText(summary)
+        .then(() => setStatus('Summary copied to clipboard.'))
+        .catch(() => setStatus('Clipboard copy failed in this browser. You can still select and copy manually.', true));
+    }
+
+    async function pasteFromClipboard() {
+      try {
+        const value = await navigator.clipboard.readText();
+        state.text = state.text ? `${state.text}
+${value}` : value;
+        els.textInput.value = state.text;
+        update();
+        setStatus('Text pasted from clipboard.');
+      } catch (error) {
+        setStatus('Clipboard paste failed in this browser. Please paste manually.', true);
+      }
+    }
+
+    function clearAll() {
+      state.text = '';
+      state.excludeNumbers = false;
+      state.excludedWords = new Set();
+      els.textInput.value = '';
+      els.manualWordInput.value = '';
+      els.excludeNumbers.checked = false;
+      update();
+      setStatus('Cleared.');
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    els.textInput.addEventListener('input', (event) => {
+      state.text = event.target.value;
+      update();
+    });
+
+    els.excludeNumbers.addEventListener('change', (event) => {
+      state.excludeNumbers = event.target.checked;
+      update();
+    });
+
+    els.addWordButton.addEventListener('click', () => {
+      addExcludedWordsFromInput(els.manualWordInput.value);
+    });
+
+    els.manualWordInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addExcludedWordsFromInput(els.manualWordInput.value);
+      }
+    });
+
+    els.copyButton.addEventListener('click', copySummary);
+    els.clearButton.addEventListener('click', clearAll);
+    els.sampleButton.addEventListener('click', () => {
+      state.text = SAMPLE_TEXT;
+      els.textInput.value = SAMPLE_TEXT;
+      update();
+      setStatus('Sample text loaded.');
+    });
+    els.pasteButton.addEventListener('click', pasteFromClipboard);
+
+    update();
+  </script>
+</body>
+</html>
